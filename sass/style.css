@@ -70,6 +70,7 @@ body {
 }
 .list .active {
   font-weight: bold;
+  font-size: 1.05rem;
 }
 
 .list-horizontal li {
