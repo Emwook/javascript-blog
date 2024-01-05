@@ -9,6 +9,45 @@ $font-logo: 'Sacramento', cursive;
 $font-header: 'Oswald', sans-serif;
 $font-text: 'Source Sans Pro', sans-serif;
 
+/* Media queries */
+
+@media (max-width: 1080px) {
+  .wrapper {
+    flex-wrap: wrap;
+    margin: auto;
+    gap: 2vh;
+  }
+  .sidebar {
+    flex-grow: auto;
+    text-align: center;
+    min-height: min-content;
+  }
+  .left {
+    order: 1;
+    ul {
+      columns: 2;
+    }
+  }
+  .center {
+    order: 3;
+    min-width: 60%;
+    min-height: 50vh;
+    .post {
+      margin: 0 1rem;
+    }
+  }
+  .right {
+    order: 2;
+    display: flex;
+    flex-direction: row;
+    .authors-box,
+    .tags-box {
+      min-width: 50%;
+      margin: 0 auto;
+    }
+  }
+}
+
 /* Global */
 
 *, *::before, *::after {
@@ -22,6 +61,13 @@ body {
   font-weight: 300;
   font-size: 16px;
   line-height: 1.7;
+
+  a:link {
+    text-decoration: none;
+  }
+  a {
+    color: #444;
+  }
 }
 
 .container {
@@ -54,6 +100,7 @@ body {
 
 .posts {
   flex: 2 0 0;
+  position: relative;
 }
 
 .sidebar, .posts {
@@ -103,9 +150,14 @@ body {
 /* Post */
 
 .post {
-  display: none;
+  position: absolute;
+  top: 0;
+  display: block;
+  opacity: 0;
+  margin: auto;
   &.active {
-    display: block;
+    opacity: 1;
+    transition: 0.5s all ease-in-out;
   }
 }
 
