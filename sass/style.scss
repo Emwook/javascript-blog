@@ -11,7 +11,7 @@ $font-text: 'Source Sans Pro', sans-serif;
 
 /* Media queries */
 
-@media (max-width: 1080px) {
+@media (max-width: 932px) {
   .wrapper {
     flex-wrap: wrap;
     margin: auto;
@@ -20,7 +20,7 @@ $font-text: 'Source Sans Pro', sans-serif;
   .sidebar {
     flex-grow: auto;
     text-align: center;
-    min-height: min-content;
+    min-height: max-content;
   }
   .left {
     order: 1;
@@ -30,8 +30,6 @@ $font-text: 'Source Sans Pro', sans-serif;
   }
   .center {
     order: 3;
-    min-width: 60%;
-    min-height: 50vh;
     .post {
       margin: 0 1rem;
     }
@@ -101,6 +99,7 @@ body {
 .posts {
   flex: 2 0 0;
   position: relative;
+  min-width: 50%;
 }
 
 .sidebar, .posts {
