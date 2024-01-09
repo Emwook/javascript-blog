@@ -74,7 +74,7 @@ function generateTitleLinks(){
 
   /* remove contents of titleList */
 
-  const titleList = document.querySelector(optTitleListSelector)
+  const titleList = document.querySelector(optTitleListSelector);
   titleList.innerHTML = ' ';
 
   /* for each article */
@@ -94,8 +94,8 @@ function generateTitleLinks(){
     /* create HTML of the link */
     const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
 
-     /* insert link into titleList */
-    titleList.insertAdjacentHTML("beforeend",linkHTML);
+    /* insert link into titleList */
+    titleList.insertAdjacentHTML('beforeend', linkHTML);
     html = html + linkHTML;
   }
   titleList.innerHTML = html;
