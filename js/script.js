@@ -39,6 +39,8 @@ function resizePostWindow(){
 
   /* read sidebar left height*/
   let sidebarLeftHeight = sidebarLeft.clientHeight;
+  let sidebarLeftSelector = document.querySelector('.left');
+  let sidebarRightSelector = document.querySelector('.right');
 
 
   /* select an article with class active*/
@@ -50,20 +52,34 @@ function resizePostWindow(){
 
   /* make a selector for the posts section */
   let postsSectionSelector = document.querySelector('.posts');
-  console.log(sidebarLeftHeight);
+  let postsSectionHeight = postsSectionSelector.style.height;
+  //console.log(sidebarLeftHeight);
 
   /* [BUGGED] set active article height to sidebar height if the center section in layout type 1-1-1 is shorter than sidebars*/
   /* BUGGED: not reseting back to a shorter window height when switched to a taller window by an article setting; dead space leftover */
-  if (activeArticleHeight < sidebarLeftHeight && window.innerWidth > 932 ){
-    activeArticleHeight = sidebarLeftHeight + 2;
+  console.log(activeArticleHeight);
+  console.log(postsSectionHeight);
+  if (window.innerWidth > 932){
+    if (activeArticleHeight < postsSectionHeight){
+      activeArticleHeight = postsSectionHeight;
+    }
+    else{
+      let postsSectionHeightChanger = postsSectionSelector.style.height;
+      // still doesnt reset back :(
+      postsSectionHeightChanger = activeArticleHeight + 'px';
+      if (activeArticleHeight < sidebarLeftHeight){
+        activeArticleHeight = sidebarLeftHeight + 2;
+      }
+      else {
+        sidebarLeftSelector.style.height = activeArticleHeight + 'px';
+        sidebarRightSelector.style.height = activeArticleHeight + 'px';
+      }
+    }
   }
 
   /* set posts section height to equal active article height */
-  let postsSectionHeight = postsSectionSelector.style.height = activeArticleHeight + 'px';
-  
-  console.log(postsSectionHeight);
+  //let postsSectionHeightChanger = postsSectionSelector.style.height = activeArticleHeight + 'px';
 }
-
 resizePostWindow();
 
 const optArticleSelector = '.post',
@@ -107,6 +123,7 @@ function generateTitleLinks(){
     link.addEventListener('click', resizePostWindow);
   }
   window.addEventListener('resize',resizePostWindow);
+  resizePostWindow();
 }
 
 generateTitleLinks();
