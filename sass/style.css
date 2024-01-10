@@ -10,8 +10,6 @@
   .sidebar {
     flex-grow: auto;
     text-align: center;
-    min-height: -moz-max-content;
-    min-height: max-content;
   }
   .left {
     order: 1;

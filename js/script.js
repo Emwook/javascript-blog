@@ -34,51 +34,46 @@ function titleClickHandler(event){
 }   
 
 function resizePostWindow(){
-  /* get sidebar left section selector */
-  let sidebarLeft = document.querySelector('.left');
-
-  /* read sidebar left height*/
-  let sidebarLeftHeight = sidebarLeft.clientHeight;
+  /* get sidebar section selectors */
   let sidebarLeftSelector = document.querySelector('.left');
   let sidebarRightSelector = document.querySelector('.right');
-
 
   /* select an article with class active*/
   let activeArticle = document.querySelector('.posts article.active');
 
-  /* get active article height and add 15px as a bottom margin*/
+  /* get active article height */
   let activeArticleHeight = activeArticle.clientHeight;
   activeArticleHeight = activeArticleHeight + 15;
 
   /* make a selector for the posts section */
   let postsSectionSelector = document.querySelector('.posts');
-  let postsSectionHeight = postsSectionSelector.style.height;
-  //console.log(sidebarLeftHeight);
+  postsSectionSelector.style.height = activeArticleHeight + 'px';
 
-  /* [BUGGED] set active article height to sidebar height if the center section in layout type 1-1-1 is shorter than sidebars*/
-  /* BUGGED: not reseting back to a shorter window height when switched to a taller window by an article setting; dead space leftover */
-  console.log(activeArticleHeight);
+  /* get posts section height and make a selector for the list in the left sidebar */
+  let postsSectionHeight = postsSectionSelector.clientHeight;
+  let sidebarLeftList = document.querySelector('.left ul');
+  /* change layout based on the width of viewport*/
   console.log(postsSectionHeight);
   if (window.innerWidth > 932){
-    if (activeArticleHeight < postsSectionHeight){
-      activeArticleHeight = postsSectionHeight;
+    sidebarLeftSelector.style.height = postsSectionHeight + 2 + 'px';
+    sidebarRightSelector.style.height = postsSectionHeight + 2 + 'px';
+    if(postsSectionHeight > 450){
+      sidebarRightSelector.style.display = 'flex';
+      sidebarRightSelector.style.flexDirection = 'column';
+      sidebarRightSelector.firstElementChild.style.marginRight = 'auto';
+      sidebarLeftList.style.columns = '1';
     }
-    else{
-      let postsSectionHeightChanger = postsSectionSelector.style.height;
-      // still doesnt reset back :(
-      postsSectionHeightChanger = activeArticleHeight + 'px';
-      if (activeArticleHeight < sidebarLeftHeight){
-        activeArticleHeight = sidebarLeftHeight + 2;
-      }
-      else {
-        sidebarLeftSelector.style.height = activeArticleHeight + 'px';
-        sidebarRightSelector.style.height = activeArticleHeight + 'px';
-      }
+    else {
+      sidebarRightSelector.style.display = 'flex';
+      sidebarRightSelector.style.flexDirection = 'row';
+      sidebarRightSelector.firstElementChild.style.marginRight = '14px';
+      sidebarLeftList.style.columns = '2';
     }
   }
-
-  /* set posts section height to equal active article height */
-  //let postsSectionHeightChanger = postsSectionSelector.style.height = activeArticleHeight + 'px';
+  else{
+    sidebarRightSelector.firstElementChild.style.marginRight = 'auto';
+    sidebarRightSelector.style.textAlign = 'center';
+  }
 }
 resizePostWindow();
 
@@ -123,7 +118,6 @@ function generateTitleLinks(){
     link.addEventListener('click', resizePostWindow);
   }
   window.addEventListener('resize',resizePostWindow);
-  resizePostWindow();
 }
 
 generateTitleLinks();
