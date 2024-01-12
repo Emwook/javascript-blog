@@ -53,33 +53,29 @@ function resizePostWindow(){
   let postsSectionHeight = postsSectionSelector.clientHeight;
   let sidebarLeftList = document.querySelector('.left ul');
   /* change layout based on the width of viewport*/
-  console.log(postsSectionHeight);
-  if (window.innerWidth > 932){
+  if (window.innerWidth > 755){
     sidebarLeftSelector.style.height = postsSectionHeight + 2 + 'px';
     sidebarRightSelector.style.height = postsSectionHeight + 2 + 'px';
     if(postsSectionHeight > 450){
-      sidebarRightSelector.style.display = 'flex';
-      sidebarRightSelector.style.flexDirection = 'column';
-      sidebarRightSelector.firstElementChild.style.marginRight = 'auto';
-      sidebarLeftList.style.columns = '1';
+      sidebarRightSelector.classList.remove('right-short');
+      sidebarRightSelector.classList.add('right-tall');
+      sidebarLeftSelector.classList.remove('left-short');
+      sidebarLeftSelector.classList.add('left-tall');
     }
     else {
-      sidebarRightSelector.style.display = 'flex';
-      sidebarRightSelector.style.flexDirection = 'row';
-      sidebarRightSelector.firstElementChild.style.marginRight = '14px';
-      sidebarLeftList.style.columns = '2';
+      sidebarRightSelector.classList.remove('right-tall');
+      sidebarRightSelector.classList.add('right-short');
+      sidebarLeftSelector.classList.remove('left-tall');
+      sidebarLeftSelector.classList.add('left-short');
     }
-  }
-  else{
-    sidebarRightSelector.firstElementChild.style.marginRight = 'auto';
-    sidebarRightSelector.style.textAlign = 'center';
   }
 }
 resizePostWindow();
 
 const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
-  optTitleListSelector = '.titles';
+  optTitleListSelector = '.titles',
+  optArticleTagsSelector = '.post-tags .list';
 
 function generateTitleLinks(){
 
@@ -119,5 +115,50 @@ function generateTitleLinks(){
   }
   window.addEventListener('resize',resizePostWindow);
 }
+
+function generateTags(){
+  /* find all articles */
+
+  let articleList = document.querySelectorAll('.posts article');
+
+  /* START LOOP: for every article: */
+  for (let article of articleList){
+
+    /* find tags wrapper */
+    let articleTagsSection = article.querySelector(optArticleTagsSelector);
+    
+    /* make html variable with empty string */
+    let htmlString = '';
+
+    /* get tags from data-tags attribute */
+    let articleTagsList = article.getAttribute('data-tags');
+
+    /* split tags into array */
+    let splitArticleTagsList = articleTagsList.split(' ');
+    console.log(splitArticleTagsList);
+
+    /* START LOOP: for each tag */
+    for (let articleTag of splitArticleTagsList){
+      /* generate HTML of the link */
+      let linkHTML = '<li><a href="#tag-' + articleTag + '"><span>' + articleTag + '</span></a></li>';
+      console.log(linkHTML);
+
+      /* add generated code to html variable */
+      htmlString = htmlString + ' ' + linkHTML;
+
+      /* END LOOP: for each tag */
+      
+    }
+    /* insert HTML of all the links into the tags wrapper */
+    articleTagsSection.insertAdjacentHTML('beforeend', htmlString);
+
+
+    /* insert HTML of all the links into the tags wrapper */
+
+    /* END LOOP: for every article: */
+  }
+}
+
+generateTags();
 
 generateTitleLinks();

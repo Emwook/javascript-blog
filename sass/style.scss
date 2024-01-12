@@ -11,7 +11,7 @@ $font-text: 'Source Sans Pro', sans-serif;
 
 /* Media queries */
 
-@media (max-width: 932px) {
+@media (max-width: 755px) {
   .wrapper {
     flex-wrap: wrap;
     margin: auto;
@@ -93,18 +93,20 @@ body {
 
 .sidebar {
   flex: 1 0 0;
+  text-align: center;
 }
 
 .posts {
   flex: 2 0 0;
   position: relative;
   min-width: 50%;
+  padding: 20px;
 }
 
 .sidebar, .posts {
   background: $color-light;
   margin-right: 10px;
-  padding: 40px;
+  padding: 40px 20px;
   border: 1px solid $color-dark;
   border-radius: 5px;
 }
@@ -167,5 +169,35 @@ body {
   display: flex;
   p {
     margin: 0 10px 0 0;
+  }
+}
+
+// layout classes to switch on or off based on window width
+
+.right-tall {
+  display: flex;
+  flex-direction: column;
+}
+.left-tall {
+  ul {
+    columns: 1;
+  }
+}
+
+.right-short {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  text-align: center;
+  padding: 40px 10px;
+  .tags-box{
+    padding-right: 4px;
+    min-width: 50%;
+  }
+}
+
+.left-short {
+  ul {
+    columns: 2;
   }
 }

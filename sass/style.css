@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Oswald:400,600|Sacramento|Source+Sans+Pro:300&subset=latin-ext");
 /* Variables */
 /* Media queries */
-@media (max-width: 932px) {
+@media (max-width: 755px) {
   .wrapper {
     flex-wrap: wrap;
     margin: auto;
@@ -80,18 +80,20 @@ body a {
 
 .sidebar {
   flex: 1 0 0;
+  text-align: center;
 }
 
 .posts {
   flex: 2 0 0;
   position: relative;
   min-width: 50%;
+  padding: 20px;
 }
 
 .sidebar, .posts {
   background: #fff;
   margin-right: 10px;
-  padding: 40px;
+  padding: 40px 20px;
   border: 1px solid #444;
   border-radius: 5px;
 }
@@ -147,4 +149,31 @@ body a {
 }
 .post-tags p {
   margin: 0 10px 0 0;
+}
+
+.right-tall {
+  display: flex;
+  flex-direction: column;
+}
+
+.left-tall ul {
+  -moz-columns: 1;
+       columns: 1;
+}
+
+.right-short {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  text-align: center;
+  padding: 40px 10px;
+}
+.right-short .tags-box {
+  padding-right: 4px;
+  min-width: 50%;
+}
+
+.left-short ul {
+  -moz-columns: 2;
+       columns: 2;
 }/*# sourceMappingURL=style.css.map */
