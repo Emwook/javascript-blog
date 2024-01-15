@@ -82,6 +82,24 @@ body a {
   flex: 1 0 0;
   text-align: center;
 }
+.sidebar button {
+  background: none;
+  border: 2px solid gray;
+  color: gray;
+  margin: 10px;
+  padding: 10px;
+}
+.sidebar button:hover {
+  color: black;
+  border: 2px solid black;
+  transition: 0.1s all ease-in-out;
+}
+.sidebar button:active {
+  scale: 110%;
+  color: green;
+  border: 2px solid green;
+  transition: 0.2s all ease-in-out;
+}
 
 .posts {
   flex: 2 0 0;
@@ -134,8 +152,10 @@ body a {
   display: block;
   opacity: 0;
   margin: auto;
+  z-index: 1;
 }
 .post.active {
+  z-index: 4;
   opacity: 1;
   transition: 0.5s all ease-in-out;
 }
@@ -146,6 +166,16 @@ body a {
 
 .post-tags {
   display: flex;
+}
+.post-tags ul li a {
+  color: red;
+}
+.post-tags ul li a:link {
+  text-decoration: underline;
+}
+.post-tags ul li a:hover {
+  scale: 110%;
+  transition: 0.1s all ease-in-out;
 }
 .post-tags p {
   margin: 0 10px 0 0;
