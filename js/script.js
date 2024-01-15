@@ -1,5 +1,6 @@
 'use strict';
 
+/* [ Articles section  */
 function titleClickHandler(event){
   event.preventDefault();
   const clickedElement = this;
@@ -31,8 +32,9 @@ function titleClickHandler(event){
   /* [DONE] add class 'active' to the correct article */
   targetArticle.classList.add('active');
 }   
+/* [ Articles section  */
 
-//move this to sass if possible
+/* (Additional functions */
 function resizePostWindow(){
   /* get sidebar section selectors */
   let sidebarLeftSelector = document.querySelector('.left');
@@ -72,13 +74,16 @@ function resizePostWindow(){
 }
 
 resizePostWindow();
+/* Additional functions ) */
 
+/* Selectors */
 const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles',
   optArticleTagsSelector = '.post-tags .list',
   optArticleAuthorSelector = '.post-author';
 
+/* [ Title Links */
 function generateTitleLinks(customSelector = ''){
 
   /* remove contents of titleList */
@@ -115,7 +120,9 @@ function generateTitleLinks(customSelector = ''){
     link.addEventListener('click', resizePostWindow);
   }
 }
+/* Title Links ] */
 
+/* [ Tags  */
 function generateTags(){
   /* find all articles */
   let articleList = document.querySelectorAll('.posts article');
@@ -195,6 +202,7 @@ function tagClickHandler(event){
   generateTitleLinks('[data-tags~="' + tag + '"]');
 }
 
+/* ( Additional functions */
 function resetPostList(){
   /* call list making function without any additional argument */
   generateTitleLinks();
@@ -212,6 +220,7 @@ function postSectionTitleModifier(booleanValue) {
     resetButton.style.display='none';
   }
 }
+/* Additional functions ) */
 
 function addClickListenersToTags(){
   /* get list of tag links and reset button */
@@ -231,7 +240,9 @@ function addClickListenersToTags(){
 }
 
 addClickListenersToTags();
+/* Tags ] */
 
+/* [ Authors */
 function generateAuthors(){
   /* find all articles */
   let articleList = document.querySelectorAll('.posts article');
@@ -247,9 +258,11 @@ function generateAuthors(){
 
     /* get article author from data-author attribute */
     let articleAuthor = article.getAttribute('data-author');
+    let articleAuthorString = article.getAttribute('data-author').replace(' ','-');
+    // replace was put as a last change in code
 
     /* generate HTML of the link */
-    let linkHTML = '<li><a href="#author-' + articleAuthor + '"><span>' + 'by ' + articleAuthor + '</span></a></li>';
+    let linkHTML = '<a href="#author-' + articleAuthorString + '"><span>' + 'by ' + articleAuthor + '</span></a>';
 
     /* add generated code to html variable */
     htmlString = htmlString + ' ' + linkHTML;
@@ -272,11 +285,11 @@ function authorClickHandler(event){
   /* make a new constant "href" and read the attribute "href" of the clicked element */
   const href = clickedElement.getAttribute('href');
 
-  /* make a new constant "tag" and extract tag from the "href" constant */
-  const author = href.replace('#author-','');
+  /* make a new constant "author" and extract tag from the "href" constant */
+  const authorString = href.replace('#author-','').replace('-',' ');
 
-  /* find all tag links with class active */
-  let authorList = document.querySelectorAll('.authors-box .authors');
+  /* find all authir links with class active */
+  let authorList = document.querySelectorAll('.post-author');
 
   /* START LOOP: for each active tag link */
   for(let authorListElement of authorList){
@@ -295,13 +308,20 @@ function authorClickHandler(event){
   }
   /* END LOOP: for each found author link */
 
+  generateTitleLinks('[data-author="' + authorString + '"]');
 }
 
 function addClickListenersToAuthors(){
-  let authorLinkList = document.querySelectorAll('.authors a');
+  let resetButton = document.getElementById('reset-button');
+  let authorLinkList = document.querySelectorAll('.post-author a');
+
   for(let authorLink of authorLinkList){
-    authorLink.addEventListener('click',authorClickHandler);
+    authorLink.addEventListener('click', authorClickHandler);
+    authorLink.addEventListener('click', function () {postSectionTitleModifier(true);});
   }
+  resetButton.addEventListener('click',resetPostList);
+  resetButton.addEventListener('click', function () {postSectionTitleModifier(false);});
 }
 
 addClickListenersToAuthors();
+/* Authors ] */
