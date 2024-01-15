@@ -16,7 +16,6 @@ function titleClickHandler(event){
   clickedElement.classList.add('active');   
 
   /* [DONE] remove class 'active' from all articles */
-
   const activeArticles = document.querySelectorAll('.posts article.active');
 
   for(let activeArticle of activeArticles){
@@ -44,7 +43,7 @@ function resizePostWindow(){
 
   /* get active article height */
   let activeArticleHeight = activeArticle.clientHeight;
-  activeArticleHeight = activeArticleHeight + 15;
+  activeArticleHeight = activeArticleHeight + 45;
 
   /* make a selector for the posts section */
   let postsSectionSelector = document.querySelector('.posts');
@@ -83,12 +82,10 @@ const optArticleSelector = '.post',
 function generateTitleLinks(customSelector = ''){
 
   /* remove contents of titleList */
-
   const titleList = document.querySelector(optTitleListSelector);
   titleList.innerHTML = ' ';
 
   /* for each article */
-  //change required to opt(...)
   let articles = document.querySelectorAll(optArticleSelector + customSelector);
 
   let html = '';
@@ -98,7 +95,7 @@ function generateTitleLinks(customSelector = ''){
     const articleId = article.getAttribute('id');
 
     /* find the title element */
-    /* get the title from the title element */
+    /* and get the title from the title element */
 
     const articleTitle = article.querySelector(optTitleSelector).innerHTML;
 
@@ -121,7 +118,6 @@ function generateTitleLinks(customSelector = ''){
 
 function generateTags(){
   /* find all articles */
-
   let articleList = document.querySelectorAll('.posts article');
 
   /* START LOOP: for every article: */
@@ -148,13 +144,10 @@ function generateTags(){
       htmlString = htmlString + ' ' + linkHTML;
 
       /* END LOOP: for each tag */
-      
     }
+
     /* insert HTML of all the links into the tags wrapper */
     articleTagsSection.insertAdjacentHTML('beforeend', htmlString);
-
-
-    /* insert HTML of all the links into the tags wrapper */
 
     /* END LOOP: for every article: */
   }
@@ -182,37 +175,35 @@ function tagClickHandler(event){
 
   /* START LOOP: for each active tag link */
   for(let tagListElement of tagList){
+    /* remove class active */
     tagListElement.classList.remove('active');
   }
-
-  /* remove class active */
-
   /* END LOOP: for each active tag link */
 
 
   /* find all tag links with "href" attribute equal to the "href" constant */
-
   let tagLinkList = document.querySelectorAll('a.active[href^="#tag-"]');
 
   /* START LOOP: for each found tag link */
   for(let tagLink of tagLinkList){
+    /* add class active */
     tagLink.classList.add('active');
   }
-
-  /* add class active */
-
   /* END LOOP: for each found tag link */
-  generateTitleLinks('[data-tags~="' + tag + '"]');
 
   /* execute function "generateTitleLinks" with article selector as argument */
+  generateTitleLinks('[data-tags~="' + tag + '"]');
 }
 
 function resetPostList(){
+  /* call list making function without any additional argument */
   generateTitleLinks();
 }
 
 function postSectionTitleModifier(booleanValue) {
+  /* get the reset button by id */
   let resetButton = document.getElementById('reset-button');
+  /* switch between type of view based on boolean value */
   if (booleanValue) {
     document.querySelector('.left h2').textContent = 'Related posts';
     resetButton.style.display='block';
@@ -223,51 +214,47 @@ function postSectionTitleModifier(booleanValue) {
 }
 
 function addClickListenersToTags(){
+  /* get list of tag links and reset button */
   let tagLinkList = document.querySelectorAll('.post-tags a');
   let resetButton = document.getElementById('reset-button');
 
+  /* make a for loop by the tag link list */
   for(let tagLink of tagLinkList){
     tagLink.addEventListener('click',tagClickHandler);
     tagLink.addEventListener('click', function () {postSectionTitleModifier(true);});
   }
 
+  /* add event listeners for the reset button */
   resetButton.addEventListener('click',resetPostList);
   resetButton.addEventListener('click', function () {postSectionTitleModifier(false);});
-  /* START LOOP: for each link */
-
-  /* add tagClickHandler as event listener for that link */
-
-  /* END LOOP: for each link */
+  
 }
 
 addClickListenersToTags();
 
 function generateAuthors(){
   /* find all articles */
-
   let articleList = document.querySelectorAll('.posts article');
 
   /* START LOOP: for every article: */
   for (let article of articleList){
 
-    /* find tags wrapper */
+    /* find author section */
     let articleAuthorSection = article.querySelector(optArticleAuthorSelector);
     
     /* make html variable with empty string */
     let htmlString = '';
 
-    /* get tags from data-tags attribute */
+    /* get article author from data-author attribute */
     let articleAuthor = article.getAttribute('data-author');
 
-    /* split tags into array */
-
-    /* START LOOP: for each tag */
     /* generate HTML of the link */
     let linkHTML = '<li><a href="#author-' + articleAuthor + '"><span>' + 'by ' + articleAuthor + '</span></a></li>';
 
     /* add generated code to html variable */
     htmlString = htmlString + ' ' + linkHTML;
 
+    /* insert the html string */
     articleAuthorSection.insertAdjacentHTML('beforeend', htmlString);
       
   }
@@ -293,29 +280,21 @@ function authorClickHandler(event){
 
   /* START LOOP: for each active tag link */
   for(let authorListElement of authorList){
+    /* remove class active */
     authorListElement.classList.remove('active');
   }
-
-  /* remove class active */
-
   /* END LOOP: for each active tag link */
 
-
-  /* find all tag links with "href" attribute equal to the "href" constant */
-
+  /* find all author links with "href" attribute equal to the "href" constant */
   let authorLinkList = document.querySelectorAll('a.active[href^="#author-"]');
 
-  /* START LOOP: for each found tag link */
+  /* START LOOP: for each found author link */
   for(let authorLink of authorLinkList){
+    /* add class active */
     authorLink.classList.add('active');
   }
+  /* END LOOP: for each found author link */
 
-  /* add class active */
-
-  /* END LOOP: for each found tag link */
-  generateTitleLinks('[data-authors="' + author + '"]');
-
-  /* execute function "generateTitleLinks" with article selector as argument */
 }
 
 function addClickListenersToAuthors(){
@@ -326,6 +305,3 @@ function addClickListenersToAuthors(){
 }
 
 addClickListenersToAuthors();
-
-
-// [BUG] INITIAL CENTER SECTION LOADING WINDOW SIZE ERROR, CAUSED BY AUTHOR GENERATION
