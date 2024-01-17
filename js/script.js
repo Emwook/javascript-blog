@@ -82,7 +82,7 @@ const optArticleSelector = '.post',
   optTitleListSelector = '.titles',
   optArticleTagsSelector = '.post-tags .list',
   optArticleAuthorSelector = '.post-author',
-  optTagsListSelector = '.list .tags';
+  optTagsListSelector = '.tags';
 
 /* [ Title Links */
 function generateTitleLinks(customSelector = ''){
@@ -124,9 +124,17 @@ function generateTitleLinks(customSelector = ''){
 /* Title Links ] */
 
 /* [ Tags  */
+/* function tagsParams(tags){
+  let count = '';
+  for(let tag of tags){
+
+  } 
+}
+*/
+
 function generateTags(){
-/* [NEW] create a new variable allTags with an empty array */
-//let allTags = [];
+/* [NEW] create a new variable allTags with an empty object */
+  let allTags = {};
 
   /* find all articles */
   let articleList = document.querySelectorAll('.posts article');
@@ -147,12 +155,22 @@ function generateTags(){
     let splitArticleTagsList = articleTagsList.split(' ');
 
     /* START LOOP: for each tag */
-    for (let articleTag of splitArticleTagsList){
+    for (let tag of splitArticleTagsList){
       /* generate HTML of the link */
-      let linkHTML = '<li><a href="#tag-' + articleTag + '"><span>' + articleTag + '</span></a></li>';
+      let linkHTML = '<li><a href="#tag-' + tag + '"><span>' + tag + '</span></a></li>';
 
       /* add generated code to html variable */
-      htmlString = htmlString + ' ' + linkHTML;
+      htmlString += ' ' + linkHTML;
+
+      /* [NEW] check if this link is NOT already in allTags */
+      if(!allTags.hasOwnProperty(tag)){
+        /* [NEW] add generated code to allTags array */
+        allTags[tag] = 1;
+      }
+      else {
+        allTags[tag]++;
+      }
+
 
       /* END LOOP: for each tag */
     }
@@ -165,11 +183,21 @@ function generateTags(){
   
 
   /* [NEW] find list of tags in right column */
-  //const tagList = document.querySelector(optTagsListSelector);
+  const tagList = document.querySelector(optTagsListSelector);
 
   /* [NEW] add html from allTags to tagList */
-  //crashes left column  \/
-  //tagList.innerHTML = allTags.join(' ');
+
+  /*
+  const tagsParams = calculateTagsParams(allTags);
+  console.log('tagsParams:', tagsParams);
+  */
+
+  let allTagsHTML = '';
+  for(let tag in allTags){
+    allTagsHTML += '<li><a href="#tag-' + tag + '"><span>' + tag + '  (' + allTags[tag] + ') '+ '</span></a></li>';
+  }
+  tagList.innerHTML = allTagsHTML;
+
 }
 
 generateTags();
@@ -337,3 +365,4 @@ function addClickListenersToAuthors(){
 
 addClickListenersToAuthors();
 /* Authors ] */
+
