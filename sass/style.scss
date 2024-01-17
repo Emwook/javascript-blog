@@ -206,6 +206,20 @@ body {
   }
 }
 
+.tags-box{
+  .section-title{
+    margin: 0;
+  }
+  .tags{
+    margin: 0 auto;
+    max-width: 50%;
+    li {
+      display: inline-block;
+      padding: 0.1rem;
+    }
+  }
+}
+
 // layout classes to switch on or off based on window width
 
 .right-tall {
@@ -234,4 +248,22 @@ body {
   ul {
     columns: 2;
   }
+}
+
+// tag sizes for the tag cloud
+ 
+.tag-size-1 {
+  font-size: 0.8rem;
+}
+.tag-size-2 {
+  font-size: 0.1rem;
+}
+.tag-size-3 {
+  font-size: 1.2rem;
+}
+.tag-size-4 {
+  font-size: 1.4rem;
+}
+.tag-size-5 {
+  font-size: 1.6rem;
 }

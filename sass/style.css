@@ -181,6 +181,18 @@ body a {
   margin: 0 10px 0 0;
 }
 
+.tags-box .section-title {
+  margin: 0;
+}
+.tags-box .tags {
+  margin: 0 auto;
+  max-width: 50%;
+}
+.tags-box .tags li {
+  display: inline-block;
+  padding: 0.1rem;
+}
+
 .right-tall {
   display: flex;
   flex-direction: column;
@@ -206,4 +218,24 @@ body a {
 .left-short ul {
   -moz-columns: 2;
        columns: 2;
+}
+
+.tag-size-1 {
+  font-size: 0.8rem;
+}
+
+.tag-size-2 {
+  font-size: 0.1rem;
+}
+
+.tag-size-3 {
+  font-size: 1.2rem;
+}
+
+.tag-size-4 {
+  font-size: 1.4rem;
+}
+
+.tag-size-5 {
+  font-size: 1.6rem;
 }/*# sourceMappingURL=style.css.map */

@@ -82,7 +82,9 @@ const optArticleSelector = '.post',
   optTitleListSelector = '.titles',
   optArticleTagsSelector = '.post-tags .list',
   optArticleAuthorSelector = '.post-author',
-  optTagsListSelector = '.tags';
+  optTagsListSelector = '.tags',
+  optCloudClassCount = 5,
+  optCloudClassPrefix = 'tag-size-';
 
 /* [ Title Links */
 function generateTitleLinks(customSelector = ''){
@@ -124,13 +126,42 @@ function generateTitleLinks(customSelector = ''){
 /* Title Links ] */
 
 /* [ Tags  */
-/* function tagsParams(tags){
-  let count = '';
-  for(let tag of tags){
-
-  } 
+function calculateTagsParams(tags){
+  let params = {};
+  params.max = 0;
+  params.min = 999999;
+  for(let tag in tags){
+    //console.log(tag + ' is used ' + tags[tag] + ' times');
+    if(tags[tag] > params.max){
+      params.max = tags[tag];
+    }
+    if(tags[tag] < params.min){
+      params.min = tags[tag];
+    }
+  }
+  return params; 
 }
-*/
+
+function calculateTagClass(count, params){
+  let className = '';
+  let size = params.max - params.min;
+  
+  const relativeValue = (count/size - size);
+  //console.log(relativeValue);
+  let classIndex ;
+  for (let i = 1; i < optCloudClassCount + 1; i++){
+    if (relativeValue >= (optCloudClassCount - i)/optCloudClassCount){
+      classIndex = (optCloudClassCount - i) + 1;
+      break;
+    }
+    else{
+      continue;
+    }
+  }
+  //console.log(classIndex);
+  className += optCloudClassPrefix + classIndex;
+  return className;
+}
 
 function generateTags(){
 /* [NEW] create a new variable allTags with an empty object */
@@ -187,14 +218,12 @@ function generateTags(){
 
   /* [NEW] add html from allTags to tagList */
 
-  /*
-  const tagsParams = calculateTagsParams(allTags);
-  console.log('tagsParams:', tagsParams);
-  */
+  
+  const tagsParams = calculateTagsParams(allTags);  
 
   let allTagsHTML = '';
   for(let tag in allTags){
-    allTagsHTML += '<li><a href="#tag-' + tag + '"><span>' + tag + '  (' + allTags[tag] + ') '+ '</span></a></li>';
+    allTagsHTML += '<li><a href="#tag-' + tag + '" class ="' + calculateTagClass(allTags[tag], tagsParams) + '" ><span>' + tag + /*'  (' + allTags[tag] + ') '+ */ '</span></a></li>';
   }
   tagList.innerHTML = allTagsHTML;
 
