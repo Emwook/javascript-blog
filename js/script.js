@@ -1,5 +1,18 @@
 'use strict';
 
+/* Selectors */
+const opts = {
+  ArticleSelector: '.post',
+  TitleSelector: '.post-title',
+  TitleListSelector: '.titles',
+  ArticleTagsSelector: '.post-tags .list',
+  ArticleAuthorSelector: '.post-author',
+  TagsListSelector: '.tags',
+  CloudClassCount: 5,
+  CloudClassPrefix: 'tag-size-',
+  AuthorsListSelector: '.authors'
+};
+
 /* [ Articles section  */
 function titleClickHandler(event){
   event.preventDefault();
@@ -76,25 +89,15 @@ function resizePostWindow(){
 resizePostWindow();
 /* Additional functions ) */
 
-/* Selectors */
-const optArticleSelector = '.post',
-  optTitleSelector = '.post-title',
-  optTitleListSelector = '.titles',
-  optArticleTagsSelector = '.post-tags .list',
-  optArticleAuthorSelector = '.post-author',
-  optTagsListSelector = '.tags',
-  optCloudClassCount = 5,
-  optCloudClassPrefix = 'tag-size-';
-
 /* [ Title Links */
 function generateTitleLinks(customSelector = ''){
 
   /* remove contents of titleList */
-  const titleList = document.querySelector(optTitleListSelector);
+  const titleList = document.querySelector(opts.TitleListSelector);
   titleList.innerHTML = ' ';
 
   /* for each article */
-  let articles = document.querySelectorAll(optArticleSelector + customSelector);
+  let articles = document.querySelectorAll(opts.ArticleSelector + customSelector);
 
   let html = '';
 
@@ -105,7 +108,7 @@ function generateTitleLinks(customSelector = ''){
     /* find the title element */
     /* and get the title from the title element */
 
-    const articleTitle = article.querySelector(optTitleSelector).innerHTML;
+    const articleTitle = article.querySelector(opts.TitleSelector).innerHTML;
 
     /* create HTML of the link */
     const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
@@ -149,9 +152,9 @@ function calculateTagClass(count, params){
   const relativeValue = (count/size - size);
   //console.log(relativeValue);
   let classIndex ;
-  for (let i = 1; i < optCloudClassCount + 1; i++){
-    if (relativeValue >= (optCloudClassCount - i)/optCloudClassCount){
-      classIndex = (optCloudClassCount - i) + 1;
+  for (let i = 1; i < opts.CloudClassCount + 1; i++){
+    if (relativeValue >= (opts.CloudClassCount - i)/opts.CloudClassCount){
+      classIndex = (opts.CloudClassCount - i) + 1;
       break;
     }
     else{
@@ -159,7 +162,7 @@ function calculateTagClass(count, params){
     }
   }
   //console.log(classIndex);
-  className += optCloudClassPrefix + classIndex;
+  className += opts.CloudClassPrefix + classIndex;
   return className;
 }
 
@@ -174,7 +177,7 @@ function generateTags(){
   for (let article of articleList){
 
     /* find tags wrapper */
-    let articleTagsSection = article.querySelector(optArticleTagsSelector);
+    let articleTagsSection = article.querySelector(opts.ArticleTagsSelector);
     
     /* make html variable with empty string */
     let htmlString = '';
@@ -212,13 +215,11 @@ function generateTags(){
     /* END LOOP: for every article: */
   }
   
-
   /* [NEW] find list of tags in right column */
-  const tagList = document.querySelector(optTagsListSelector);
+  const tagList = document.querySelector(opts.TagsListSelector);
 
   /* [NEW] add html from allTags to tagList */
 
-  
   const tagsParams = calculateTagsParams(allTags);  
 
   let allTagsHTML = '';
@@ -313,6 +314,8 @@ addClickListenersToTags();
 
 /* [ Authors */
 function generateAuthors(){
+  let allAuthors = {};
+
   /* find all articles */
   let articleList = document.querySelectorAll('.posts article');
 
@@ -320,26 +323,41 @@ function generateAuthors(){
   for (let article of articleList){
 
     /* find author section */
-    let articleAuthorSection = article.querySelector(optArticleAuthorSelector);
+    let articleAuthorSection = article.querySelector(opts.ArticleAuthorSelector);
     
     /* make html variable with empty string */
     let htmlString = '';
 
     /* get article author from data-author attribute */
     let articleAuthor = article.getAttribute('data-author');
-    let articleAuthorString = article.getAttribute('data-author').replace(' ','-');
-    // replace was put as a last change in code
 
+    let articleAuthorString = article.getAttribute('data-author').replace(' ','-');
+    
     /* generate HTML of the link */
     let linkHTML = '<a href="#author-' + articleAuthorString + '"><span>' + 'by ' + articleAuthor + '</span></a>';
 
     /* add generated code to html variable */
-    htmlString = htmlString + ' ' + linkHTML;
+    htmlString += ' ' + linkHTML;
 
-    /* insert the html string */
+    if(!allAuthors.hasOwnProperty(articleAuthor)){
+      /* [NEW] add generated code to allTags array */
+      allAuthors[articleAuthor] = 1;
+    }
+    else {
+      allAuthors[articleAuthor]++;
+    }
+
     articleAuthorSection.insertAdjacentHTML('beforeend', htmlString);
-      
   }
+
+  const authorList = document.querySelector(opts.AuthorsListSelector);
+
+  let allAuthorsHTML = '';
+  for(let author in allAuthors){
+    console.log(author);
+    allAuthorsHTML += '<li><a href="#tag-' + author + '"><span>' + author + '  (' + allAuthors[author] + ') '+  '</span></a></li>';
+  }
+  authorList.innerHTML = allAuthorsHTML;
 }
 
 generateAuthors();
