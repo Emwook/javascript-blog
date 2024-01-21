@@ -1,5 +1,13 @@
 'use strict';
 
+const templates = {
+  articleLink: Handlebars.compile(document.querySelector('#template-article-link').innerHTML),
+  tagLink: Handlebars.compile(document.querySelector('#template-tag-link').innerHTML),
+  authorLink: Handlebars.compile(document.querySelector('#template-author-link').innerHTML),
+  tagCloudLink: Handlebars.compile(document.querySelector('#template-tag-cloud-link').innerHTML),
+  authorList: Handlebars.compile(document.querySelector('#template-author-list').innerHTML),
+};
+
 /* Selectors */
 const opts = {
   ArticleSelector: '.post',
@@ -47,47 +55,6 @@ function titleClickHandler(event){
 }   
 /* [ Articles section  */
 
-/* (Additional functions */
-function resizePostWindow(){
-  /* get sidebar section selectors */
-  let sidebarLeftSelector = document.querySelector('.left');
-  let sidebarRightSelector = document.querySelector('.right');
-
-  /* select an article with class active*/
-  let activeArticle = document.querySelector('.posts article.active');
-
-  /* get active article height */
-  let activeArticleHeight = activeArticle.clientHeight;
-  activeArticleHeight = activeArticleHeight + 45;
-
-  /* make a selector for the posts section */
-  let postsSectionSelector = document.querySelector('.posts');
-  postsSectionSelector.style.height = activeArticleHeight + 'px';
-
-  /* get posts section height and make a selector for the list in the left sidebar */
-  let postsSectionHeight = postsSectionSelector.clientHeight;
-  /* change layout based on the width of viewport*/
-  if (window.innerWidth > 755){
-    sidebarLeftSelector.style.height = postsSectionHeight + 2 + 'px';
-    sidebarRightSelector.style.height = postsSectionHeight + 2 + 'px';
-    if(postsSectionHeight > 450){
-      sidebarRightSelector.classList.remove('right-short');
-      sidebarRightSelector.classList.add('right-tall');
-      sidebarLeftSelector.classList.remove('left-short');
-      sidebarLeftSelector.classList.add('left-tall');
-    }
-    else {
-      sidebarRightSelector.classList.remove('right-tall');
-      sidebarRightSelector.classList.add('right-short');
-      sidebarLeftSelector.classList.remove('left-tall');
-      sidebarLeftSelector.classList.add('left-short');
-    }
-  }
-}
-
-resizePostWindow();
-/* Additional functions ) */
-
 /* [ Title Links */
 function generateTitleLinks(customSelector = ''){
 
@@ -110,7 +77,8 @@ function generateTitleLinks(customSelector = ''){
     const articleTitle = article.querySelector(opts.TitleSelector).innerHTML;
 
     /* create HTML of the link */
-    const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
+    const linkHTMLData = {id: articleId, title: articleTitle};
+    const linkHTML = templates.articleLink(linkHTMLData);
 
     /* insert link into titleList */
     titleList.insertAdjacentHTML('beforeend', linkHTML);
@@ -122,7 +90,6 @@ function generateTitleLinks(customSelector = ''){
 
   for(let link of links){
     link.addEventListener('click', titleClickHandler);
-    link.addEventListener('click', resizePostWindow);
   }
 }
 /* Title Links ] */
@@ -190,7 +157,8 @@ function generateTags(){
     /* START LOOP: for each tag */
     for (let tag of splitArticleTagsList){
       /* generate HTML of the link */
-      let linkHTML = '<li><a href="#tag-' + tag + '"><span>' + tag + '</span></a></li>';
+      const linkHTMLData = {id: tag, tagName: tag};
+      const linkHTML = templates.tagLink(linkHTMLData);
 
       /* add generated code to html variable */
       htmlString += ' ' + linkHTML;
@@ -221,11 +189,15 @@ function generateTags(){
 
   const tagsParams = calculateTagsParams(allTags);  
 
-  let allTagsHTML = '';
+  const allTagsData = {tags: []};
   for(let tag in allTags){
-    allTagsHTML += '<li><a href="#tag-' + tag + '" class ="' + calculateTagClass(allTags[tag], tagsParams) + '" ><span>' + tag + /*'  (' + allTags[tag] + ') '+ */ '</span></a></li>';
+    allTagsData.tags.push({
+      tag: tag,
+      count: allTags[tag],
+      className: calculateTagClass(allTags[tag], tagsParams)
+    });
   }
-  tagList.innerHTML = allTagsHTML;
+  tagList.innerHTML = templates.tagCloudLink(allTagsData);
 
 }
 
@@ -333,7 +305,8 @@ function generateAuthors(){
     let articleAuthorString = article.getAttribute('data-author').replace(' ','-');
     
     /* generate HTML of the link */
-    let linkHTML = '<a href="#author-' + articleAuthorString + '"><span>' + 'by ' + articleAuthor + '</span></a>';
+    const linkHTMLData = {id: articleAuthorString, author: articleAuthor};
+    const linkHTML = templates.authorLink(linkHTMLData);
 
     /* add generated code to html variable */
     htmlString += ' ' + linkHTML;
@@ -351,12 +324,16 @@ function generateAuthors(){
 
   const authorList = document.querySelector(opts.AuthorsListSelector);
 
-  let allAuthorsHTML = '';
+  const allAuthorsData = {authors: []};
   for(let author in allAuthors){
-    console.log(author);
-    allAuthorsHTML += '<li><a href="#tag-' + author + '"><span>' + author + '  (' + allAuthors[author] + ') '+  '</span></a></li>';
+    allAuthorsData.authors.push({
+      author: author,
+      count: allAuthors[author],
+      authorString: author.replace(' ','-'),
+    });
   }
-  authorList.innerHTML = allAuthorsHTML;
+  //console.log(allAuthorsData);
+  authorList.innerHTML = templates.authorList(allAuthorsData);
 }
 
 generateAuthors();
