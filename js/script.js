@@ -66,7 +66,6 @@ function resizePostWindow(){
 
   /* get posts section height and make a selector for the list in the left sidebar */
   let postsSectionHeight = postsSectionSelector.clientHeight;
-  let sidebarLeftList = document.querySelector('.left ul');
   /* change layout based on the width of viewport*/
   if (window.innerWidth > 755){
     sidebarLeftSelector.style.height = postsSectionHeight + 2 + 'px';
